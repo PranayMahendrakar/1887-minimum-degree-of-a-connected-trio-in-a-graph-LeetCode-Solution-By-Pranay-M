@@ -1,0 +1,36 @@
+class Solution {
+    public:
+        int minTrioDegree(int n, vector<vector<int>>& edges) {
+                vector<int> degree(n + 1, 0);
+                        set<pair<int,int>> edgeSet;
+                                
+                                        for (auto& e : edges) {
+                                                    degree[e[0]]++;
+                                                                degree[e[1]]++;
+                                                                            int u = min(e[0], e[1]), v = max(e[0], e[1]);
+                                                                                        edgeSet.insert({u, v});
+                                                                                                }
+                                                                                                        
+                                                                                                                vector<vector<int>> adj(n + 1);
+                                                                                                                        for (auto& e : edges) {
+                                                                                                                                    int u = e[0], v = e[1];
+                                                                                                                                                if (degree[u] > degree[v] || (degree[u] == degree[v] && u > v)) swap(u, v);
+                                                                                                                                                            adj[u].push_back(v);
+                                                                                                                                                                    }
+                                                                                                                                                                            
+                                                                                                                                                                                    int minDegree = INT_MAX;
+                                                                                                                                                                                            for (int u = 1; u <= n; u++) {
+                                                                                                                                                                                                        for (int v : adj[u]) {
+                                                                                                                                                                                                                        for (int w : adj[u]) {
+                                                                                                                                                                                                                                            if (v >= w) continue;
+                                                                                                                                                                                                                                                                int a = min(v, w), b = max(v, w);
+                                                                                                                                                                                                                                                                                    if (edgeSet.count({a, b})) {
+                                                                                                                                                                                                                                                                                                            minDegree = min(minDegree, degree[u] + degree[v] + degree[w] - 6);
+                                                                                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                                                                                                                                            
+                                                                                                                                                                                                                                                                                                                                                                                    return minDegree == INT_MAX ? -1 : minDegree;
+                                                                                                                                                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                                                                                                                                                        };
